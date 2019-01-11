@@ -31,11 +31,13 @@ exports.setCompliant = async (accessToken, compName) => {
   .get({
     headers: { 'content-type': 'application/json' },
     url: `https://graph.microsoft.com/beta/devices?$filter=startswith(displayName, '${compName}')`,
+    //url:`https://graph.microsoft.com/beta/devices?$filter=startswith(deviceOSType, '${compName}')`,
+    //url: `https://graph.microsoft.com/beta/deviceManagement/managedDevices/?$filter=startswith(serialNumber, '${compName}')`,
     auth: { bearer: accessToken }
   })
   .then(response => {
     const computerinfo = JSON.parse(response)
-    //console.log(computerinfo)
+    //console.log('computerinfo: ', computerinfo)
     
 
    
@@ -62,16 +64,20 @@ exports.doSetCompliant = async (accessToken, computerinfo) => {
       
     const compparams = JSON.stringify({
       
-        isCompliant: true,
-        isManaged: true
-
+        //"isCompliant": true,
+        //"isManaged": true
+        "deviceOSVersion": '66.6'
+        //complianceState: 'compliant'
       })
-    /*
+    
       const doCompliant= await request.patch({
         headers: { 'content-type': 'application/json' },
         auth: { bearer: accessToken },
-        url: `https://graph.windows.net/navno.onmicrosoft.com/devices/${computer.id}/?api-version=beta`,
-       // url: `https://graph.microsoft.com/beta/devices/${computer.id}`,
+        url: `https://graph.windows.net/navq.onmicrosoft.com/devices/${computer.id}/?api-version=1.6`,
+        //url: `https://api.manage.microsoft.com/update_device_attributes`
+        //url: `https://main.iam.ad.ext.azure.com/api/devices/${computer.id}}`,
+       // url: `https://graph.microsoft.com/beta/deviceManagement/managedDevices/${computer.id}`,
+        //url: `https://graph.microsoft.com/beta/devices/${computer.id}`,
         body: compparams
     })
     .then(compresponse => {
@@ -80,7 +86,7 @@ exports.doSetCompliant = async (accessToken, computerinfo) => {
     .catch(err => {
       console.log('error: ', err)
     })
-    */
+    
 
     console.log('computer: ', computer.deviceId)
   
